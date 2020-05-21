@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const withDB = async (operations, res) => {
     try {
         const client = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-        const db = client.db('pdx-food-blog-frontend');
+        const db = client.db('pdx-food-blog');
     
         await operations(db);
     
