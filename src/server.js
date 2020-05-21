@@ -6,19 +6,18 @@ import path from 'path';
 const app = express();
 
 app.use(express.static(path.join(__dirname, '/build')));
-
 app.use(bodyParser.json());
 
 const withDB = async (operations, res) => {
     try {
         const client = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-        const db = client.db('pdx-food-blog');
+        const db = client.db('pdx-food-blog-frontend');
     
         await operations(db);
     
         client.close();
     } catch (error) {
-        res.status(500).json({ message: 'Error not connected to db', error });
+        res.status(500).json({ message: 'Error connecting to db', error });
     }
 }
 
@@ -64,8 +63,8 @@ app.post('/api/articles/:name/add-comment', (req, res) => {
     }, res);
 });
 
-app.get('*', (req, res) =>{
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'));
-})
+});
 
 app.listen(8000, () => console.log('Listening on port 8000'));
